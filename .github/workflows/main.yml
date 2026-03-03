@@ -16,7 +16,7 @@ permissions:
   id-token: write
 
 env:
-  DOTNET_VERSION: "8.0.x"
+  DOTNET_VERSION: "9.0.x"
   TEST_PROJECT: "tests/AppWorkflow.Tests/AppWorkflow.Tests.csproj"
 
 jobs:
