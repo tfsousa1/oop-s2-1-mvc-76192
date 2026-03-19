@@ -6,11 +6,8 @@ public class Book
 
     public string Title { get; set; } = "";
     public string Author { get; set; } = "";
-    public string Genre { get; set; } = "";
-    public string ISBN { get; set; } = "";
-
-    public int PublishedYear { get; set; }
-
+    public string Isbn { get; set; } = "";
+    public string Category { get; set; } = "";
     public bool IsAvailable { get; set; } = true;
 
     public ICollection<Loan> Loans { get; set; } = new List<Loan>();

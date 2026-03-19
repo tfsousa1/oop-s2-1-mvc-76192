@@ -61,7 +61,7 @@ namespace CommunityLibraryDesk.Controllers
         // POST: Loans/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BookId,MemberId,LoanDate,DueDate,ReturnDate")] Loan loan)
+        public async Task<IActionResult> Create([Bind("Id,BookId,MemberId,LoanDate,DueDate,ReturnedDate")] Loan loan)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace CommunityLibraryDesk.Controllers
         // POST: Loans/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BookId,MemberId,LoanDate,DueDate,ReturnDate")] Loan loan)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BookId,MemberId,LoanDate,DueDate,ReturnedDate")] Loan loan)
         {
             if (id != loan.Id)
             {

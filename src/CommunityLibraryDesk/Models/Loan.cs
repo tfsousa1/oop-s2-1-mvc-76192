@@ -12,6 +12,5 @@ public class Loan
 
     public DateTime LoanDate { get; set; }
     public DateTime DueDate { get; set; }
-
-    public DateTime? ReturnDate { get; set; }
+    public DateTime? ReturnedDate { get; set; }
 }

@@ -54,7 +54,7 @@ namespace CommunityLibraryDesk.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Author,Genre,ISBN,PublishedYear,IsAvailable")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,Title,Author,Category,Isbn,IsAvailable,IsAvailable")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace CommunityLibraryDesk.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Genre,ISBN,PublishedYear,IsAvailable")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Category,Isbn,IsAvailable,IsAvailable")] Book book)
         {
             if (id != book.Id)
             {
