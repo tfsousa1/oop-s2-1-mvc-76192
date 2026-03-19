@@ -13,21 +13,12 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Book
-            </th>
-            <th>
-                Member
-            </th>
-            <th>
-                LoanDate
-            </th>
-            <th>
-                DueDate
-            </th>
-            <th>
-                ReturnedDate
-            </th>
+            <th>Book</th>
+            <th>Member</th>
+            <th>LoanDate</th>
+            <th>DueDate</th>
+            <th>ReturnedDate</th>
+            <th>Status</th>
             <th></th>
         </tr>
     </thead>
@@ -35,22 +26,31 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>@(item.Book?.Title ?? "")</td>
+                <td>@(item.Member?.Email ?? "")</td>
+                <td>@item.LoanDate</td>
+                <td>@item.DueDate</td>
+                <td>@item.ReturnedDate</td>
                 <td>
-                    @(item.Book?.Title ?? "")
+                    @if (item.ReturnedDate != null)
+                    {
+                        <span>Returned</span>
+                    }
+                    else if (item.DueDate < DateTime.Today)
+                    {
+                        <span>Overdue</span>
+                    }
+                    else
+                    {
+                        <span>Active</span>
+                    }
                 </td>
                 <td>
-                    @(item.Member?.Email ?? "")
-                </td>
-                <td>
-                    @item.LoanDate
-                </td>
-                <td>
-                    @item.DueDate
-                </td>
-                <td>
-                    @item.ReturnedDate
-                </td>
-                <td>
+                    @if (item.ReturnedDate == null)
+                    {
+                        <a asp-action="MarkReturned" asp-route-id="@item.Id">Mark Returned</a>
+                        <span> | </span>
+                    }
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
