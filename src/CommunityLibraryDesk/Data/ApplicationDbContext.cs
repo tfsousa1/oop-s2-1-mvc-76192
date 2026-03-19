@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using CommunityLibraryDesk.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CommunityLibraryDesk.Data
@@ -9,5 +10,9 @@ namespace CommunityLibraryDesk.Data
             : base(options)
         {
         }
+
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Member> Members { get; set; }
+        public DbSet<Loan> Loans { get; set; }
     }
 }
