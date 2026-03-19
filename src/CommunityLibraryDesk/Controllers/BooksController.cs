@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CommunityLibraryDesk.Data;
 using CommunityLibraryDesk.Models;
@@ -20,9 +19,48 @@ namespace CommunityLibraryDesk.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string category, string availability, string sortOrder)
         {
-            return View(await _context.Books.ToListAsync());
+            IQueryable<Book> books = _context.Books;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                books = books.Where(b => b.Title.Contains(searchString) || b.Author.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                books = books.Where(b => b.Category == category);
+            }
+
+            if (!string.IsNullOrEmpty(availability))
+            {
+                if (availability == "Available")
+                {
+                    books = books.Where(b => b.IsAvailable);
+                }
+                else if (availability == "OnLoan")
+                {
+                    books = books.Where(b => !b.IsAvailable);
+                }
+            }
+
+            books = sortOrder == "title_desc"
+                ? books.OrderByDescending(b => b.Title)
+                : books.OrderBy(b => b.Title);
+
+            ViewBag.Categories = await _context.Books
+                .Select(b => b.Category)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToListAsync();
+
+            ViewBag.SearchString = searchString;
+            ViewBag.SelectedCategory = category;
+            ViewBag.SelectedAvailability = availability;
+            ViewBag.SortOrder = sortOrder;
+
+            return View(await books.ToListAsync());
         }
 
         // GET: Books/Details/5
@@ -50,11 +88,9 @@ namespace CommunityLibraryDesk.Controllers
         }
 
         // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Author,Category,Isbn,IsAvailable,IsAvailable")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,Title,Author,Isbn,Category,IsAvailable")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -82,11 +118,9 @@ namespace CommunityLibraryDesk.Controllers
         }
 
         // POST: Books/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Category,Isbn,IsAvailable,IsAvailable")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Isbn,Category,IsAvailable")] Book book)
         {
             if (id != book.Id)
             {

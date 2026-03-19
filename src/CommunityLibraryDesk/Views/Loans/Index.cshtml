@@ -1,14 +1,15 @@
 @model IEnumerable<CommunityLibraryDesk.Models.Loan>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Loans";
 }
 
-<h1>Index</h1>
+<h1>Loans</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -19,41 +20,42 @@
                 Member
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LoanDate)
+                LoanDate
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DueDate)
+                DueDate
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReturnedDate)
+                ReturnedDate
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-               @Html.DisplayFor(modelItem => item.Book.Title)
-            </td>
-            <td>
-               @Html.DisplayFor(modelItem => item.Member.Email)
-             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoanDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DueDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReturnedDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(item.Book?.Title ?? "")
+                </td>
+                <td>
+                    @(item.Member?.Email ?? "")
+                </td>
+                <td>
+                    @item.LoanDate
+                </td>
+                <td>
+                    @item.DueDate
+                </td>
+                <td>
+                    @item.ReturnedDate
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

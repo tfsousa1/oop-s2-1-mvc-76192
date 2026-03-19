@@ -11,38 +11,42 @@
     <h4>Loan</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Book)
+        <dt class="col-sm-2">
+            Book
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Book.Title)
+        <dd class="col-sm-10">
+            @(Model.Book?.Title ?? "")
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Member)
+
+        <dt class="col-sm-2">
+            Member
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Member.Email)
+        <dd class="col-sm-10">
+            @(Model.Member?.Email ?? "")
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LoanDate)
+
+        <dt class="col-sm-2">
+            LoanDate
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LoanDate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DueDate)
+
+        <dt class="col-sm-2">
+            DueDate
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DueDate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReturnedDate)
+
+        <dt class="col-sm-2">
+            ReturnedDate
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ReturnedDate)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |

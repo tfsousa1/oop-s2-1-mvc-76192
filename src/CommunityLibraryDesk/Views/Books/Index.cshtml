@@ -1,65 +1,134 @@
 @model IEnumerable<CommunityLibraryDesk.Models.Book>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Books";
 }
 
-<h1>Index</h1>
+<h1>Books</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="row g-2">
+        <div class="col-md-4">
+            <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Search by title or author" />
+        </div>
+
+        <div class="col-md-3">
+            <select name="category" class="form-select">
+                <option value="">All Categories</option>
+                @foreach (var cat in ViewBag.Categories)
+                {
+                    if (ViewBag.SelectedCategory == cat)
+                    {
+                        <option value="@cat" selected>@cat</option>
+                    }
+                    else
+                    {
+                        <option value="@cat">@cat</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <select name="availability" class="form-select">
+                @if (ViewBag.SelectedAvailability == "")
+                {
+                    <option value="" selected>All</option>
+                }
+                else
+                {
+                    <option value="">All</option>
+                }
+
+                @if (ViewBag.SelectedAvailability == "Available")
+                {
+                    <option value="Available" selected>Available</option>
+                }
+                else
+                {
+                    <option value="Available">Available</option>
+                }
+
+                @if (ViewBag.SelectedAvailability == "OnLoan")
+                {
+                    <option value="OnLoan" selected>On Loan</option>
+                }
+                else
+                {
+                    <option value="OnLoan">On Loan</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                <a asp-action="Index"
+                   asp-route-searchString="@ViewBag.SearchString"
+                   asp-route-category="@ViewBag.SelectedCategory"
+                   asp-route-availability="@ViewBag.SelectedAvailability"
+                   asp-route-sortOrder="@(ViewBag.SortOrder == "title_desc" ? "" : "title_desc")">
+                    Title
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Author)
+                Author
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                Isbn
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Isbn)
+                Category
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsAvailable)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsAvailable)
+                Status
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Isbn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsAvailable)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsAvailable)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Author
+                </td>
+                <td>
+                    @item.Isbn
+                </td>
+                <td>
+                    @item.Category
+                </td>
+                <td>
+                    @if (item.IsAvailable)
+                    {
+                        <span class="text-success">Available</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">On Loan</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
