@@ -22,7 +22,10 @@ namespace CommunityLibraryDesk.Controllers
         // GET: Loans
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Loans.Include(l => l.Book).Include(l => l.Member);
+            var applicationDbContext = _context.Loans
+                .Include(l => l.Book)
+                .Include(l => l.Member);
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -38,6 +41,7 @@ namespace CommunityLibraryDesk.Controllers
                 .Include(l => l.Book)
                 .Include(l => l.Member)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (loan == null)
             {
                 return NotFound();
@@ -49,14 +53,12 @@ namespace CommunityLibraryDesk.Controllers
         // GET: Loans/Create
         public IActionResult Create()
         {
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id");
-            ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id");
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Title");
+            ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Email");
             return View();
         }
 
         // POST: Loans/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,BookId,MemberId,LoanDate,DueDate,ReturnDate")] Loan loan)
@@ -67,8 +69,9 @@ namespace CommunityLibraryDesk.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", loan.BookId);
-            ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id", loan.MemberId);
+
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Title", loan.BookId);
+            ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Email", loan.MemberId);
             return View(loan);
         }
 
@@ -85,14 +88,13 @@ namespace CommunityLibraryDesk.Controllers
             {
                 return NotFound();
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", loan.BookId);
-            ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id", loan.MemberId);
+
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Title", loan.BookId);
+            ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Email", loan.MemberId);
             return View(loan);
         }
 
         // POST: Loans/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BookId,MemberId,LoanDate,DueDate,ReturnDate")] Loan loan)
@@ -122,8 +124,9 @@ namespace CommunityLibraryDesk.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", loan.BookId);
-            ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id", loan.MemberId);
+
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Title", loan.BookId);
+            ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Email", loan.MemberId);
             return View(loan);
         }
 
@@ -139,6 +142,7 @@ namespace CommunityLibraryDesk.Controllers
                 .Include(l => l.Book)
                 .Include(l => l.Member)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (loan == null)
             {
                 return NotFound();
